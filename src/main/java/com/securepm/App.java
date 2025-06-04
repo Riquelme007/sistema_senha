@@ -12,7 +12,6 @@ public class App {
         AuthService authService = new AuthService();
         CredentialService credentialService = new CredentialService();
 
-        // 1. Se não houver nenhum usuário registrado, oferece para registrar
         if (!authService.isUserRegistered()) {
             System.out.println("Nenhum usuário encontrado. Deseja se registrar? (s/n)");
             String opt = scanner.nextLine().trim().toLowerCase();
@@ -24,7 +23,6 @@ public class App {
             }
         }
 
-        // 2. Fluxo de login / reset / sair
         SecretKey aesKey = null;
         while (aesKey == null) {
             System.out.println("\n=== AUTENTICAÇÃO ===");
@@ -36,7 +34,6 @@ public class App {
 
             switch (opt) {
                 case "1":
-                    // Chama o login() existente, que retorna SecretKey ou null em caso de falha
                     aesKey = authService.login(scanner);
                     break;
 
@@ -68,7 +65,6 @@ public class App {
             }
         }
 
-        // 3. Menu principal de credenciais (aquele do CredentialService sem parâmetros)
         while (true) {
             System.out.println("\n=== MENU PRINCIPAL ===");
             System.out.println("1) Adicionar credencial");

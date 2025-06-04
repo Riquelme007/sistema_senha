@@ -8,10 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 
-/**
- * Repositório simples para armazenar/recuperar o único usuário (master).
- * Persiste em arquivo serializado: users.dat
- */
 public class UserRepository {
     private static final String USER_FILE = "users.dat";
 
@@ -32,7 +28,6 @@ public class UserRepository {
         }
     }
 
-    /** Delete o arquivo users.dat, se existir. */
     public boolean deleteUser() throws IOException {
         Path path = Paths.get(USER_FILE);
         if (Files.exists(path)) {

@@ -3,25 +3,23 @@ package com.securepm.model;
 import java.io.Serializable;
 import java.time.Instant;
 
-/**
- * Representa uma credencial de um serviço qualquer (ex.: email, banco, etc.).
- * A senha propriamente dita será armazenada cifrada em AES.
- */
 public class Credential implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String id;                // uuid único
-    private String serviceName;       // ex.: “Gmail”, “BancoXYZ”
-    private String username;          // login/usuário do serviço
-    private byte[] encryptedPassword; // senha cifrada em AES
-    private byte[] iv;                // vetor de inicialização usado na cifragem
+    private String id;
+    private String serviceName;
+    private String username;
+    private byte[] encryptedPassword;
+    private byte[] iv;
     private Instant createdAt;
 
-    public Credential(String id,
-                      String serviceName,
-                      String username,
-                      byte[] encryptedPassword,
-                      byte[] iv) {
+    public Credential(
+            String id,
+            String serviceName,
+            String username,
+            byte[] encryptedPassword,
+            byte[] iv
+    ) {
         this.id = id;
         this.serviceName = serviceName;
         this.username = username;

@@ -3,15 +3,12 @@ package com.securepm.model;
 import java.io.Serializable;
 import java.time.Instant;
 
-/**
- * Representa o usuário administrador da aplicação (master password, 2FA, etc.).
- */
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String username;
-    private String passwordHash;      // hash bcrypt da master password
-    private String twoFASecret;       // segredo base32 para 2FA
+    private String passwordHash;
+    private String twoFASecret;
     private Instant createdAt;
 
     public User(String username, String passwordHash, String twoFASecret) {

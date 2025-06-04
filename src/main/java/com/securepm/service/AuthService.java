@@ -12,9 +12,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 import java.util.Scanner;
 
-/**
- * Serviço de autenticação: registro, login, 2FA e reset de usuário.
- */
 public class AuthService {
     private final UserRepository userRepository = new UserRepository();
 
@@ -57,15 +54,6 @@ public class AuthService {
         }
     }
 
-    /**
-     * Tenta fazer login:
-     *  - Verifica se há usuário cadastrado
-     *  - Compara username e bcrypt hash da master password
-     *  - Verifica código 2FA
-     *
-     * Se tudo der certo, retorna uma SecretKey AES (pode ser gerada aqui ou derivada da senha).
-     * Caso contrário, devolve null.
-     */
     public SecretKey login(Scanner scanner) {
         try {
             System.out.println("== LOGIN ==");
