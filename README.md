@@ -64,10 +64,6 @@ Confira o arquivo [`pom.xml`](pom.xml) para ver todas as dependências utilizada
 **Juan Riquelme Serafim**
 📧 [juan.riquelme.serafim@gmail.com](mailto:juan.riquelme.serafim@gmail.com)
 📱 (81) 98501-4408
-🎓 Estudante de Análise e Desenvolvimento de Sistemas – 4º Período (UNIT - Universidade Tiradentes)
+🎓 Estudante de Análise e Desenvolvimento de Sistemas – 5º Período (UNIT - Universidade Tiradentes)
 🏙️ Recife - PE
 💼 Desenvolvedor Java com foco em segurança, criptografia e usabilidade
-
----
-
-Se quiser, posso gerar esse README formatado em arquivo Markdown (`.md`) para você subir direto. Deseja que eu faça isso?
