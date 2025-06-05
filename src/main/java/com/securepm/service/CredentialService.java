@@ -1,5 +1,6 @@
 package com.securepm.service;
 
+// Importação das classes necessárias
 import com.securepm.model.Credential;
 import com.securepm.repository.CredentialRepository;
 
@@ -10,12 +11,17 @@ import java.util.Scanner;
 import java.util.UUID;
 
 public class CredentialService {
+    // Instância do repositório para manipular as credenciais
     private final CredentialRepository repository;
 
+    // Construtor inicializando o repositório
     public CredentialService() {
         this.repository = new CredentialRepository();
     }
 
+    /**
+     * Método para adicionar uma nova credencial
+     */
     public void addCredential(javax.crypto.SecretKey aesKey, Scanner scanner) {
         try {
             System.out.println("** ADICIONAR NOVA CREDENCIAL **");
@@ -28,6 +34,7 @@ public class CredentialService {
             System.out.print("Senha (enter para gerar automaticamente): ");
             String rawPassword = scanner.nextLine().trim();
 
+            // Se a senha não for informada, gera automaticamente
             if (rawPassword.isEmpty()) {
                 int len;
                 do {
@@ -38,6 +45,7 @@ public class CredentialService {
                 System.out.println("Senha gerada: " + rawPassword);
             }
 
+            // Verifica se a senha foi comprometida em vazamentos de dados
             int pwnedCount = com.securepm.util.BreachChecker.getPwnedCount(rawPassword);
             if (pwnedCount > 0) {
                 System.out.printf("Atenção! Essa senha apareceu em vazamentos %d vezes.%n", pwnedCount);
@@ -49,13 +57,19 @@ public class CredentialService {
                 }
             }
 
+            // Realiza a criptografia da senha com AES
             byte[] combinedIvAndCiphertext = com.securepm.util.EncryptionUtil.encrypt(rawPassword, aesKey);
+            // Extrai o vetor de inicialização (IV) dos primeiros 16 bytes
             byte[] iv = java.util.Arrays.copyOf(combinedIvAndCiphertext, 16);
+            // Senha criptografada completa
             byte[] encryptedPwd = combinedIvAndCiphertext;
 
+            // Gera um ID único para a credencial
             String id = UUID.randomUUID().toString();
+            // Cria o objeto Credential com os dados
             Credential cred = new Credential(id, service, user, encryptedPwd, iv);
 
+            // Salva a credencial no repositório
             repository.add(cred);
             System.out.println("Credencial armazenada com sucesso! ID=" + id);
         } catch (Exception e) {
@@ -64,14 +78,19 @@ public class CredentialService {
         }
     }
 
+    /**
+     * Método para listar todas as credenciais armazenadas
+     */
     public void listCredentials(javax.crypto.SecretKey aesKey) {
         try {
+            // Verifica se o arquivo de credenciais existe e não está vazio
             File f = new File("credentials.dat");
             if (!f.exists() || f.length() == 0) {
                 System.out.println("Nenhuma credencial armazenada.");
                 return;
             }
 
+            // Recupera todas as credenciais do repositório
             List<Credential> all = repository.getAll();
             if (all.isEmpty()) {
                 System.out.println("Nenhuma credencial armazenada.");
@@ -79,6 +98,7 @@ public class CredentialService {
             }
 
             System.out.println("** LISTA DE CREDENCIAIS **");
+            // Exibe cada credencial
             for (Credential c : all) {
                 String encryptedBase64 = Base64.getEncoder().encodeToString(c.getEncryptedPassword());
                 System.out.println("ID: " + c.getId());
@@ -94,11 +114,16 @@ public class CredentialService {
         }
     }
 
+    /**
+     * Método para remover uma credencial específica pelo ID
+     */
     public void removeCredential(Scanner scanner) {
         try {
             System.out.println("** REMOVER CREDENCIAL **");
             System.out.print("ID da credencial a remover: ");
             String id = scanner.nextLine().trim();
+
+            // Remove a credencial pelo ID
             boolean removed = repository.removeById(id);
             if (removed) {
                 System.out.println("Credencial removida com sucesso.");
