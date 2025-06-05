@@ -39,8 +39,8 @@ src/
 
 ```bash
 # Clonar o repositório
-git clone https://github.com/Riquelme007/gerenciador-senhas-seguras.git
-cd gerenciador-senhas-seguras
+git clone https://github.com/Riquelme007/sistema_senha.git
+cd sistema_senha
 
 # Compilar o projeto
 mvn compile
