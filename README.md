@@ -122,7 +122,7 @@ securepm/
 │              ├─ EncryptionUtil.java
 │              └─ TwoFAUtil.java
 │
-├─ credentials.dat      (gerado em tempo de execução)
+├─ accessCredentials.dat      (gerado em tempo de execução)
 ├─ users.dat            (gerado em tempo de execução)
 └─ README.md
 ```text

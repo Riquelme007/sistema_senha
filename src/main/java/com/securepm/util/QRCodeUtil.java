@@ -3,43 +3,53 @@ package com.securepm.util;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.EnumMap;
 import java.util.Map;
 
 /**
- * Utilitário para geração de códigos QR em formato PNG.
+ * Classe utilitária que encapsula a lógica de geração de QR Codes
+ * utilizando a biblioteca ZXing ("Zebra Crossing").
  */
 public class QRCodeUtil {
 
     /**
-     * Gera um código QR codificado em PNG a partir dos dados fornecidos.
+     * Cria uma imagem de QR Code em formato PNG a partir de uma string de dados.
+     * A imagem é gerada e mantida inteiramente em memória como um array de bytes.
      *
-     * @param data Conteúdo que será codificado no QR Code.
-     * @param width Largura da imagem do QR Code.
-     * @param height Altura da imagem do QR Code.
-     * @return Array de bytes contendo a imagem PNG do QR Code.
-     * @throws Exception Caso ocorra algum erro na geração do QR Code.
+     * @param data   A informação a ser codificada no QR Code (ex: uma URL, um texto).
+     * @param width  A largura desejada para a imagem final em pixels.
+     * @param height A altura desejada para a imagem final em pixels.
+     * @return Um array de bytes que representa a imagem PNG do QR Code gerado.
+     * @throws WriterException Se ocorrer um erro durante a fase de codificação dos dados.
+     * @throws IOException Se ocorrer um erro ao escrever a imagem no stream em memória.
      */
-    public static byte[] generateQRCodePng(String data, int width, int height) throws Exception {
-        // Configurações opcionais para a geração do QR Code, como margem mínima.
-        Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
-        hints.put(EncodeHintType.MARGIN, 1); // Define margem mínima ao redor do QR Code
+    public static byte[] generateQRCodePng(String data, int width, int height) throws WriterException, IOException {
 
-        // Gera a matriz de bits que representa o QR Code com os parâmetros informados.
-        BitMatrix matrix = new MultiFormatWriter()
+        // 1. Prepara um mapa de configurações para o gerador de QR Code.
+        // Aqui, definimos uma margem mínima de 1 módulo (pixel) ao redor do código.
+        Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
+        hints.put(EncodeHintType.MARGIN, 1);
+
+        // 2. Codifica os dados fornecidos em uma matriz de bits (BitMatrix).
+        // A BitMatrix é a representação lógica e abstrata do QR Code.
+        BitMatrix bitMatrix = new MultiFormatWriter()
                 .encode(data, BarcodeFormat.QR_CODE, width, height, hints);
 
-        // Stream para armazenar a imagem PNG em memória.
+        // 3. Prepara um stream de saída em memória para receber os bytes da imagem PNG.
+        // Isso evita a necessidade de criar um arquivo temporário em disco.
         ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
 
-        // Converte a matriz de bits em uma imagem PNG e escreve no stream.
-        MatrixToImageWriter.writeToStream(matrix, "PNG", pngOutputStream);
+        // 4. Utiliza a classe MatrixToImageWriter para converter a BitMatrix em uma imagem
+        // no formato PNG e escrevê-la diretamente no nosso stream em memória.
+        MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
 
-        // Retorna os bytes da imagem PNG gerada.
+        // 5. Extrai e retorna o array de bytes da imagem que foi gerada no stream.
         return pngOutputStream.toByteArray();
     }
 }
